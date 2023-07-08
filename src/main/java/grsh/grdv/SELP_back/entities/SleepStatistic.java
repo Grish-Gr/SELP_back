@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "sleep_statistics")
-public class SleepStatistics {
+public class SleepStatistic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +21,8 @@ public class SleepStatistics {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date")
     private Date date;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

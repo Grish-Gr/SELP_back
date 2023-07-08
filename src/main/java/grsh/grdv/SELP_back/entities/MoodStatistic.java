@@ -21,4 +21,8 @@ public class MoodStatistic {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date")
     private Date date;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 }
