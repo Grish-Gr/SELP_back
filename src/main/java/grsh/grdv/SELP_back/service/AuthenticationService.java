@@ -34,12 +34,16 @@ public class AuthenticationService {
         User user = userRepository.findByEmailIgnoreCase(loginForm.email()).orElseThrow(() -> {
             throw new AuthenticationServiceException("Email or password wrong");
         });
+
         if (!passwordEncoder.matches(loginForm.password(), user.getPassword())){
             throw new AuthenticationServiceException("Email or password wrong");
         }
+
         JwtResponseDto jwtTokens = generateTokensByUser(user);
+
         String userIDInSystem = jwtUtils.getUserIDAuthService(jwtTokens.getRefreshToken());
         storageJwtTokens.put(userIDInSystem, jwtTokens.getRefreshToken());
+
         return generateTokensByUser(user);
     }
 
@@ -48,6 +52,7 @@ public class AuthenticationService {
         if (!jwtProvider.validateRefreshToken(refreshToken)){
             throw new AuthenticationServiceException("Invalid refresh token");
         }
+
         String userIDInSystem = jwtUtils.getUserIDAuthService(refreshToken);
         if (!storageJwtTokens.containsKey(userIDInSystem) ||
             !storageJwtTokens.get(userIDInSystem).equals(refreshToken)
@@ -55,11 +60,13 @@ public class AuthenticationService {
             storageJwtTokens.remove(userIDInSystem);
             throw new AuthenticationServiceException("Token has already been refreshed");
         }
+
         String newRefreshToken = jwtUtils.generateNewRefreshToken(refreshToken);
         String accessToken = jwtUtils.generateAccessTokenByRefreshToken(refreshToken);
         Long expireTime = jwtUtils.getExpireTimeAccessToken(accessToken);
         String role = jwtUtils.getUserRole(refreshToken);
         storageJwtTokens.replace(userIDInSystem, newRefreshToken);
+
         return new JwtResponseDto(accessToken, newRefreshToken, expireTime, role);
     }
 
@@ -67,14 +74,12 @@ public class AuthenticationService {
         String refreshToken = jwtProvider.generateRefreshToken(
             user.getId(),
             user.getRole(),
-            user.getName(),
-            user.getLastname()
+            user.getUsername()
         );
         String accessToken = jwtProvider.generateAccessToken(
             user.getId(),
             user.getRole(),
-            user.getName(),
-            user.getLastname()
+            user.getUsername()
         );
         Long expireTime = jwtUtils.getExpireTimeAccessToken(accessToken);
         return new JwtResponseDto(accessToken, refreshToken, expireTime, user.getRole().name());

@@ -13,4 +13,8 @@ public class UserService {
     public User getUserByEmail(String email) {
         return userRepository.findByEmailIgnoreCase(email).orElseThrow();
     }
+
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow();
+    }
 }

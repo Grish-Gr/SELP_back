@@ -35,17 +35,17 @@ public class JwtProvider {
         this.accessJwtsecretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(accessJwtSecret));
     }
 
-    public String generateAccessToken(Long id, Role role, String name, String lastname){
-        return generateToken(id, role, name, lastname, expireMinutesAccessToken, accessJwtsecretKey);
+    public String generateAccessToken(Long id, Role role, String username){
+        return generateToken(id, role, username, expireMinutesAccessToken, accessJwtsecretKey);
     }
 
-    public String generateRefreshToken(Long id, Role role, String name, String lastname){
-        return generateToken(id, role, name, lastname, expireMinutesRefreshToken, refreshJwtsecretKey);
+    public String generateRefreshToken(Long id, Role role, String username){
+        return generateToken(id, role, username, expireMinutesRefreshToken, refreshJwtsecretKey);
     }
 
     private String generateToken(
         Long id, Role role,
-        String name, String lastname,
+        String name,
         Long expireMinute, SecretKey secretKey
     ){
         Instant expirationDate = Instant.now().plus(expireMinute, ChronoUnit.MINUTES);
@@ -54,7 +54,6 @@ public class JwtProvider {
             .setExpiration(Date.from(expirationDate))
             .signWith(secretKey)
             .claim("name", name)
-            .claim("lastname", lastname)
             .claim("role", role.name())
             .compact();
     }

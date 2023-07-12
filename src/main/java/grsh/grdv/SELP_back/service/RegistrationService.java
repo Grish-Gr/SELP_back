@@ -1,9 +1,11 @@
 package grsh.grdv.SELP_back.service;
 
 import grsh.grdv.SELP_back.dto.request.RegistrationFormDto;
+import grsh.grdv.SELP_back.entities.PaidSubscriptionCode;
 import grsh.grdv.SELP_back.entities.Role;
 import grsh.grdv.SELP_back.entities.User;
 import grsh.grdv.SELP_back.entities.VerificationToken;
+import grsh.grdv.SELP_back.repositories.PaidSubscriptionRepository;
 import grsh.grdv.SELP_back.repositories.UserRepository;
 import grsh.grdv.SELP_back.repositories.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -25,6 +28,8 @@ public class RegistrationService {
     @Autowired
     private EmailService emailService;
     @Autowired
+    private PaidSubscriptionRepository paidSubscriptionRepository;
+    @Autowired
     private VerificationTokenRepository verificationTokenRepository;
 
     @Transactional
@@ -33,8 +38,8 @@ public class RegistrationService {
             throw new AuthenticationServiceException("Other user contains email");
         }
         User user = new User();
-        user.setName(registrationForm.name());
-        user.setLastname(registrationForm.lastname());
+        user.setUsername(registrationForm.username());
+        user.setBirthdate(new Date(registrationForm.birthdate()));
         user.setRole(Role.USER);
         user.setEmail(registrationForm.email());
         user.setPassword(passwordEncoder.encode(registrationForm.password()));

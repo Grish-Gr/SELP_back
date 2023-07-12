@@ -27,8 +27,7 @@ public class JwtUtils {
         return jwtProvider.generateRefreshToken(
             Long.parseLong(claims.getSubject()),
             Role.valueOf(claims.get("role", String.class)),
-            claims.get("name", String.class),
-            claims.get("lastname", String.class)
+            claims.get("username", String.class)
         );
     }
 
@@ -37,14 +36,13 @@ public class JwtUtils {
         return jwtProvider.generateAccessToken(
             Long.parseLong(claims.getSubject()),
             Role.valueOf(claims.get("role", String.class)),
-            claims.get("name", String.class),
-            claims.get("lastname", String.class)
+            claims.get("username", String.class)
         );
     }
 
     public Long getExpireTimeAccessToken(String accessToken){
         Claims claims = jwtProvider.getClaimsAccessToken(accessToken);
-        return claims.getExpiration().getTime() / 1000;
+        return claims.getExpiration().getTime();
     }
 
     public String getUserIDAuthService(String refreshToken){

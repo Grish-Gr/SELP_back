@@ -3,9 +3,12 @@ package grsh.grdv.SELP_back.dto.request;
 
 import grsh.grdv.SELP_back.entities.Role;
 
+import java.util.Date;
+
 public record RegistrationFormDto(
-    String name,
-    String lastname,
+    String username,
     String email,
-    String password
+    String password,
+    Long birthdate,
+    String sex
 ) {}

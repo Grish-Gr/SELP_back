@@ -19,6 +19,6 @@ public class ArticlePage {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "html_content")
+    @Column(name = "html_content", columnDefinition="text")
     private String htmlContent;
 }

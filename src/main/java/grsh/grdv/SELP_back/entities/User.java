@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -18,11 +19,16 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "username", unique = true)
+    private String username;
 
-    @Column(name = "lastname")
-    private String lastname;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "birthdate")
+    private Date birthdate;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "sex")
+    private Sex sex;
 
     @Column(name = "email", unique = true)
     private String email;
@@ -34,9 +40,9 @@ public class User {
     @Column(name = "role")
     private Role role;
 
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "type_paid_subscription")
-    private PaidSubscriptionType paidSubscriptionType;
+    @ManyToOne()
+    @JoinColumn(name = "paid_subscription_id")
+    private PaidSubscription paidSubscription;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<MoodStatistic> moodStatistics;

@@ -1,6 +1,6 @@
 package grsh.grdv.SELP_back.entities;
 
-public enum PaidSubscriptionType {
+public enum PaidSubscriptionCode {
     FREE,
-    FULL
+    PREMIUM
 }
