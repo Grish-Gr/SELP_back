@@ -33,9 +33,9 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<?> refreshTokens(@RequestBody RefreshTokenFormDto refreshTokenForm){
-        JwtResponseDto response = authenticationService.refreshJwtTokens(refreshTokenForm.refreshToken());
+    @GetMapping("/refresh")
+    public ResponseEntity<?> refreshTokens(@RequestParam String token){
+        JwtResponseDto response = authenticationService.refreshJwtTokens(token);
         log.info("Refresh tokens: {}", response.toString());
         return ResponseEntity.ok(response);
     }
