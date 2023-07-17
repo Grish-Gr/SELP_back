@@ -9,7 +9,12 @@ public enum Role {
     USER(Set.of(
         Permission.USER_PERMISSION
     )),
-    ROLE(Set.of(
+    ADMIN(Set.of(
+        Permission.ADMIN,
+        Permission.USER_PERMISSION,
+        Permission.WRITE_NEWS
+    )),
+    DEV(Set.of(
         Permission.ADMIN,
         Permission.USER_PERMISSION,
         Permission.BANNED_USER,
