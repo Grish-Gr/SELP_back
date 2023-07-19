@@ -36,6 +36,7 @@ public class WebConfigSecurity {
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests(request -> request
                 .requestMatchers("/api/v1/auth/**").permitAll()
+                .requestMatchers("/api/v1/admin/**").permitAll()
                 .anyRequest().authenticated()
             );
         return http.build();
