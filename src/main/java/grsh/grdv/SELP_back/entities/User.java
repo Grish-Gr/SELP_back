@@ -50,6 +50,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<SleepStatistic> sleepStatistics;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<ResultTestStatistic> resultTestStatistics;
+
     @Column(name = "verification")
     private boolean verificationInSystem;
 
