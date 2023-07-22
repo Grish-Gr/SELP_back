@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @PreAuthorize("hasAuthority('USER_PERMISSION')")
-@RequestMapping("statistic")
+@RequestMapping("api/v1/statistic")
 public class StatisticController {
 
     @Autowired
