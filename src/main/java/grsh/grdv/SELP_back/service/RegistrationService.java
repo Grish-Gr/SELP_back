@@ -1,10 +1,7 @@
 package grsh.grdv.SELP_back.service;
 
 import grsh.grdv.SELP_back.dto.request.RegistrationFormDto;
-import grsh.grdv.SELP_back.entities.PaidSubscriptionCode;
-import grsh.grdv.SELP_back.entities.Role;
-import grsh.grdv.SELP_back.entities.User;
-import grsh.grdv.SELP_back.entities.VerificationToken;
+import grsh.grdv.SELP_back.entities.*;
 import grsh.grdv.SELP_back.repositories.PaidSubscriptionRepository;
 import grsh.grdv.SELP_back.repositories.UserRepository;
 import grsh.grdv.SELP_back.repositories.VerificationTokenRepository;
@@ -41,6 +38,8 @@ public class RegistrationService {
         user.setUsername(registrationForm.username());
         user.setBirthdate(new Date(registrationForm.birthdate()));
         user.setRole(Role.USER);
+        user.setSex(Sex.valueOf(registrationForm.sex()));
+        user.setPaidSubscription(paidSubscriptionRepository.findByCode(PaidSubscriptionCode.FREE));
         user.setEmail(registrationForm.email());
         user.setPassword(passwordEncoder.encode(registrationForm.password()));
         sendConfirmRegistrationMessage(user);

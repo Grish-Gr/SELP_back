@@ -8,7 +8,7 @@ import java.util.Date;
 public record UserDto(long userID, String username,
                       String email, Date birthdate,
                       String role, String paidSubscription,
-                      Boolean verificationInSystem
+                      String sex, Boolean verificationInSystem
 ) {
 
     public static UserDto from(User user){
@@ -19,6 +19,7 @@ public record UserDto(long userID, String username,
             user.getBirthdate(),
             user.getRole().name(),
             user.getPaidSubscription().getCode().name(),
+            user.getSex().name(),
             user.isVerificationInSystem()
         );
     }

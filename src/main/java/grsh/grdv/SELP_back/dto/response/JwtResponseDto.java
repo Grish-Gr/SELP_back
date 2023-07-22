@@ -12,4 +12,5 @@ public class JwtResponseDto {
     private String refreshToken;
     private Long expireTime;
     private String role;
+    private String paidSubscriptionCode;
 }

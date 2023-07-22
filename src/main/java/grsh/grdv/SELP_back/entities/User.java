@@ -52,4 +52,14 @@ public class User {
 
     @Column(name = "verification")
     private boolean verificationInSystem;
+
+    @Override
+    public String toString() {
+        return "User{" +
+            "id=" + id +
+            ", username='" + username + '\'' +
+            ", birthdate=" + birthdate +
+            ", sex=" + sex +
+            ", email='" + email + '\'' + '}';
+    }
 }

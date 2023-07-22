@@ -1,21 +1,24 @@
 package grsh.grdv.SELP_back.security;
 
+import grsh.grdv.SELP_back.entities.PaidSubscription;
+import grsh.grdv.SELP_back.entities.PaidSubscriptionCode;
 import grsh.grdv.SELP_back.entities.Role;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.security.auth.Subject;
 import java.util.Collection;
 
 @Getter
 @Setter
 public class JwtAuthentication implements Authentication {
 
-    private String name;
-    private String lastname;
+    private String username;
     private Long userID;
     private Role role;
+    private PaidSubscriptionCode paidSubscription;
     private boolean isAuthenticated;
 
     @Override
@@ -50,10 +53,11 @@ public class JwtAuthentication implements Authentication {
 
     @Override
     public String getName() {
-        return name;
+        return username;
     }
 
-    public String getFullName(){
-        return name + " " + lastname;
+    @Override
+    public boolean implies(Subject subject) {
+        return Authentication.super.implies(subject);
     }
 }

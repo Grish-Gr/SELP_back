@@ -1,5 +1,6 @@
 package grsh.grdv.SELP_back.security;
 
+import grsh.grdv.SELP_back.entities.PaidSubscriptionCode;
 import grsh.grdv.SELP_back.entities.Role;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,10 @@ public class JwtUtils {
         JwtAuthentication jwtAuthentication = new JwtAuthentication();
         jwtAuthentication.setAuthenticated(true);
         jwtAuthentication.setUserID(Long.parseLong(claims.getSubject()));
-        jwtAuthentication.setName(claims.get("name", String.class));
-        jwtAuthentication.setLastname(claims.get("lastname", String.class));
+        jwtAuthentication.setUsername(claims.get("username", String.class));
+        jwtAuthentication.setPaidSubscription(PaidSubscriptionCode
+            .valueOf(claims.get("paidSubscription", String.class))
+        );
         jwtAuthentication.setRole(Role.valueOf(claims.get("role", String.class)));
         return jwtAuthentication;
     };
@@ -27,7 +30,8 @@ public class JwtUtils {
         return jwtProvider.generateRefreshToken(
             Long.parseLong(claims.getSubject()),
             Role.valueOf(claims.get("role", String.class)),
-            claims.get("username", String.class)
+            claims.get("username", String.class),
+            PaidSubscriptionCode.valueOf(claims.get("paidSubscription", String.class))
         );
     }
 
@@ -36,7 +40,8 @@ public class JwtUtils {
         return jwtProvider.generateAccessToken(
             Long.parseLong(claims.getSubject()),
             Role.valueOf(claims.get("role", String.class)),
-            claims.get("username", String.class)
+            claims.get("username", String.class),
+            PaidSubscriptionCode.valueOf(claims.get("paidSubscription", String.class))
         );
     }
 
@@ -53,5 +58,10 @@ public class JwtUtils {
     public String getUserRole(String refreshToken){
         Claims claims = jwtProvider.getClaimsRefreshToken(refreshToken);
         return claims.get("role", String.class);
+    }
+
+    public String getPaidSubscription(String refreshToken){
+        Claims claims = jwtProvider.getClaimsRefreshToken(refreshToken);
+        return claims.get("paidSubscription", String.class);
     }
 }

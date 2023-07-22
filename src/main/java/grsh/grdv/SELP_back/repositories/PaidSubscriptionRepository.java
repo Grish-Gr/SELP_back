@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface PaidSubscriptionRepository extends JpaRepository<PaidSubscription, Long> {
-    Optional<PaidSubscription> findByCode(PaidSubscriptionCode code);
+    PaidSubscription findByCode(PaidSubscriptionCode code);
 }

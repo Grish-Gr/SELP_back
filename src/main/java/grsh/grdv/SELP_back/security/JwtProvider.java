@@ -1,5 +1,6 @@
 package grsh.grdv.SELP_back.security;
 
+import grsh.grdv.SELP_back.entities.PaidSubscriptionCode;
 import grsh.grdv.SELP_back.entities.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -35,17 +36,17 @@ public class JwtProvider {
         this.accessJwtsecretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(accessJwtSecret));
     }
 
-    public String generateAccessToken(Long id, Role role, String username){
-        return generateToken(id, role, username, expireMinutesAccessToken, accessJwtsecretKey);
+    public String generateAccessToken(Long id, Role role, String username, PaidSubscriptionCode paidSubscription){
+        return generateToken(id, role, username, paidSubscription, expireMinutesAccessToken, accessJwtsecretKey);
     }
 
-    public String generateRefreshToken(Long id, Role role, String username){
-        return generateToken(id, role, username, expireMinutesRefreshToken, refreshJwtsecretKey);
+    public String generateRefreshToken(Long id, Role role, String username, PaidSubscriptionCode paidSubscription){
+        return generateToken(id, role, username, paidSubscription, expireMinutesRefreshToken, refreshJwtsecretKey);
     }
 
     private String generateToken(
         Long id, Role role,
-        String name,
+        String username, PaidSubscriptionCode paidSubscription,
         Long expireMinute, SecretKey secretKey
     ){
         Instant expirationDate = Instant.now().plus(expireMinute, ChronoUnit.MINUTES);
@@ -53,7 +54,8 @@ public class JwtProvider {
             .setSubject(id.toString())
             .setExpiration(Date.from(expirationDate))
             .signWith(secretKey)
-            .claim("name", name)
+            .claim("paidSubscription", paidSubscription.name())
+            .claim("username", username)
             .claim("role", role.name())
             .compact();
     }

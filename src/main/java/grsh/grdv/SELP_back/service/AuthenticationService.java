@@ -65,23 +65,28 @@ public class AuthenticationService {
         String accessToken = jwtUtils.generateAccessTokenByRefreshToken(refreshToken);
         Long expireTime = jwtUtils.getExpireTimeAccessToken(accessToken);
         String role = jwtUtils.getUserRole(refreshToken);
+        String paidSubscription = jwtUtils.getPaidSubscription(refreshToken);
         storageJwtTokens.replace(userIDInSystem, newRefreshToken);
 
-        return new JwtResponseDto(accessToken, newRefreshToken, expireTime, role);
+        return new JwtResponseDto(accessToken, newRefreshToken, expireTime, role, paidSubscription);
     }
 
     private JwtResponseDto generateTokensByUser(User user){
         String refreshToken = jwtProvider.generateRefreshToken(
             user.getId(),
             user.getRole(),
-            user.getUsername()
+            user.getUsername(),
+            user.getPaidSubscription().getCode()
         );
         String accessToken = jwtProvider.generateAccessToken(
             user.getId(),
             user.getRole(),
-            user.getUsername()
+            user.getUsername(),
+            user.getPaidSubscription().getCode()
         );
         Long expireTime = jwtUtils.getExpireTimeAccessToken(accessToken);
-        return new JwtResponseDto(accessToken, refreshToken, expireTime, user.getRole().name());
+        return new JwtResponseDto(accessToken, refreshToken, expireTime,
+            user.getRole().name(), user.getPaidSubscription().getCode().name()
+        );
     }
 }

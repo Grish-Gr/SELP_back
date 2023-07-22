@@ -51,6 +51,6 @@ public class AuthController {
     public ResponseEntity<?> confirmAccount(@RequestParam String token) {
         User user = registrationService.confirmUserInSystem(token);
         log.info("User confirm in system by email: {}", user.toString());
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(UserDto.from(user));
     }
 }
